@@ -1,21 +1,14 @@
-import java.util.Random;
+import java.util.Scanner;
+import java.util.stream.IntStream;
 
 public class Main {
 
     //Task 1.1
 
-    public static void matchScore(int a, int b, int c, int d) {
-        System.out.println("Real score " + a + ":" + b);
-        System.out.println("Users score " + c + ":" + d);
-        int y = a == c && b == d ? 2 : 0;
-        if (y == 2) {
-            System.out.println("U have 2 points");
-        } else if (a > b)
-            System.out.println("U have " + (a > b ? (c > d ? 1 : 0) : 0) + " points");
-        else if (a == b)
-            System.out.println("U have " + (a == b ? (c == d ? 1 : 0) : 0) + " points");
-        else
-            System.out.println("U have " + (a < b ? (c < d ? 1 : 0) : 0) + " points");
+    public static int matchScore(int realScore1, int realScore2, int score1, int score2) {
+        return (realScore1 == score1) && (realScore2 == score2) ? 2
+                : ((realScore1 > realScore2) && (score1 > score2))
+                || ((realScore1 < realScore2) && (score1 < score2)) ? 1 : 0;
     }
 
 
@@ -25,8 +18,8 @@ public class Main {
     public static void drawDiamond(int num) {
         int prob;
         int z = 1;
-        int i;
-        for (i = 0; i <= num / 2 + 1; ++i) {
+
+        for (int i = 0; i <= num / 2 + 1; ++i) {
             prob = (num - z) / 2;
 
             for (i = 0; i <= prob; ++i) {
@@ -43,7 +36,7 @@ public class Main {
 
         z = num - 1;
 
-        for (i = num / 2; i >= 0; --i) {
+        for (int i = num / 2; i >= 0; --i) {
             prob = (num - z) / 2;
 
             for (i = 0; i <= prob; ++i) {
@@ -64,55 +57,72 @@ public class Main {
 //Task 1.3
 
 
-    public static void num(double x, double y) {
-        double square = x * x;
-        double cube = x * x * x;
-        double power = Math.pow(x, y);
-        System.out.println(" squre " + square + " cube " + cube + " power " + power);
+    public static int powerNumber(int number, int power) {
+        int result = number;
+        for (int i = 0; i < power - 1; i++) {
+            result *= number;
+        }
+        return result;
     }
-
 
 // Task 1.4
 
-public static void fibonacci(int num){
-        int i=0;
-        int z=0;
-        int y=1;
-    System.out.print("0 1 ");
-        do {
-            int a=y+z;
-            System.out.print(+a+" ");
-            z=y;
-            y=a;
-            i++;
-        }
-        while (i<num);
-}
-public static void factorial(int num){
-       int i=1;
-    int x=1;
-        do {
-            x=x*i;
-            i++;
-        }
-        while (i<=num);
-    System.out.println("Result is "+x);
+    public static int factorial(int n) {
+        if (n==1)
+            return 1;
+        else
+            return n*factorial(n-1);
+    }
 
-}
+
+    public static int GetFibo(int n) {
+        if (n > 1)
+            return GetFibo(n - 2) + GetFibo(n - 1);
+        else if (n == 1)
+            return 1;
+        else
+            return 0;
+    }
+
 
 
     public static void main(String[] args) {
-//        System.out.println("Task 1.1");
-//        matchScore(1, 0, 2, 1);
-//        System.out.println("Task 1.2");
-//        drawDiamond(7);
-//        System.out.println("Task 1.3");
-//        num(3, 5);
-//        System.out.println("Task 1.4");
-//        fibonacci(5);
-//        factorial(4);
-        Sort s = new Sort();
-        s.checkSorts();
+        System.out.println("Task 1.1");
+        matchScore(1, 0, 2, 1);
+
+        System.out.println("Task 1.2");
+        drawDiamond(7);
+
+        System.out.println("Task 1.3");
+        powerNumber(3, 5);
+
+        System.out.println("Task 1.4");
+        Scanner sc = new Scanner(System.in);
+        System.out.println(" Введите  число для вычисления Факториал(число): ");
+        int n1 = sc.nextInt();
+        System.out.println("Спасибо! Теперь введите число(номер елементя ряда Фибоначчи : ");
+        int n2 = sc.nextInt();
+        System.out.println( " Результат вычисления факториала:  !( " + n1 + " )"  + "  =   " + factorial(n1));
+        System.out.println(" ");
+        System.out.println( " В последовательности чисел Фибоначчи " + n2 +" -й  елемент  равен:  " + GetFibo(n2));
+
+        System.out.println("Task 1.5");
+        Sort.checkSorts();
+        int[] numbers = IntStream.generate(() -> (int) (Math.random()*(25331111+100000))-200000).limit(1000000).toArray();
+        int n = numbers.length;
+        System.out.println("Array length: " + numbers.length);
+        System.out.println("1-st element of array  before sort : "  + numbers[0]);
+        System.out.println("Last element of array  before sort : " + numbers[numbers.length-1]);
+        long startTime = System.currentTimeMillis();
+        Sort.bubble_Sort(numbers);
+        long spendTime = System.currentTimeMillis()-startTime;
+        for (int h = 0; h < n; h++)
+            System.out.println(numbers[h]+ " ");
+        System.out.println("Array length: " + numbers.length);
+        System.out.println("1-st element of array  after sort : " + numbers[0]);
+        System.out.println("Last element of array  after sort : " + numbers[numbers.length-1]);
+        System.out.println(" ");
+        System.out.println(" Spend time for sorting: " + spendTime);
 
     }
 
