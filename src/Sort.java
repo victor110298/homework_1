@@ -1,7 +1,9 @@
 
+
 import java.util.Random;
 
 class Sort {
+    private static int tmp;
     public static void selectionSort(int[] arr) {
         long start = System.currentTimeMillis();
         for (int i = 0; i < arr.length; i++) {
@@ -23,19 +25,20 @@ class Sort {
         System.out.println("Selection sorting time: " + (System.currentTimeMillis() - start) + "ms");
     }
 
-    public static void bubbleSort(int[] arr) {
-        long start = System.currentTimeMillis();
-        for (int i = arr.length - 1; i > 0; i--) {
-            for (int j = 0; j < i; j++) {
-                if (arr[j] > arr[j + 1]) {
-                    int tmp = arr[j];
-                    arr[j] = arr[j + 1];
-                    arr[j + 1] = tmp;
+    public static void bubble_Sort(int[] numbers) {
+        int n = numbers.length;
+        int temp = 0;
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < (n - i); j++) {
+                if (numbers[j - 1] > numbers[j]) {
+                    temp = numbers[j - 1];
+                    numbers[j - 1] = numbers[j];
+                    numbers[j] = temp;
                 }
             }
         }
-        System.out.println("Bubble sorting time: " + (System.currentTimeMillis() - start) + "ms");
     }
+
 
     public static void insertionSort(int[] arr) {
         long start = System.currentTimeMillis();
@@ -71,19 +74,40 @@ class Sort {
         }
     }
 
-    public static void heapSort(int[] arr) {
-        long start = System.currentTimeMillis();
-        int n = arr.length;
-        for (int i = n / 2 - 1; i >= 0; i--)
-            heapify(arr, n, i);
-        for (int i = n - 1; i >= 0; i--) {
-            int temp = arr[0];
-            arr[0] = arr[i];
-            arr[i] = temp;
-            heapify(arr, i, 0);
+    public static void heapsort(int[] a) {
+        for (int i = a.length / 2 - 1; i >= 0; i--) {
+            shiftDown(a, i, a.length);
         }
-        System.out.println("Heap sorting time: " + (System.currentTimeMillis() - start) + "ms");
+        for (int i = a.length - 1; i > 0; i--) {
+            swap(a, 0, i);
+            shiftDown(a, 0, i);
+        }
     }
+
+    private static void shiftDown(int[] a, int i, int n) {
+        int child;
+        for (tmp = a[i]; leftChild(i) < n; i = child) {
+            child = leftChild(i);
+            if (child != n - 1 && (a[child] < a[child + 1]))
+                child++;
+            if (tmp < a[child])
+                a[i] = a[child];
+            else
+                break;
+        }
+        a[i] = tmp;
+    }
+
+    private static int leftChild(int i) {
+        return 2 * i + 1;
+    }
+
+    public static void swap(int[] numbers, int i, int j) {
+        tmp = numbers[i];
+        numbers[i] = numbers[j];
+        numbers[j] = tmp;
+    }
+
 
     private static int partition(int[] arr, int low, int high) {
         int pivot = arr[(high + low) / 2];
@@ -126,13 +150,12 @@ class Sort {
         int[] arr1 = arr;
         quickSort(arr1);
         arr1 = arr;
-        heapSort(arr1);
         arr1 = arr;
         selectionSort(arr1);
         arr1 = arr;
         insertionSort(arr1);
         arr1 = arr;
-        bubbleSort(arr1);
+
 
 
     }
